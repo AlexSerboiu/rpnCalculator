@@ -5,6 +5,7 @@ namespace App\Action;
 
 use App\Entity\Utility\Reader;
 use App\Entity\Operand\FloatOperand;
+use App\Exception\InvalidInputException;
 use App\Entity\Operand\Handler\OperandHandler;
 use App\Entity\Operator\Handler\OperatorHandler;
 
@@ -53,6 +54,7 @@ class Calculator
             $this->operatorHandler->setOperatorStackFromInput($input);
             $this->operandHandler->setOperandStackFromInput($input);
 
+
             $operatorsStack = $this->operatorHandler->getOperatorStack();
             $operandsStack  = $this->operandHandler->getOperandStack();
 
@@ -60,25 +62,21 @@ class Calculator
             array_pop($operandsStack);
             array_pop($operandsStack);
 
+            // Check if there are enough operators and operands
+            if (count($this->operandHandler->getOperandStack()) - count($this->operatorHandler->getOperatorStack()) !== 3) {
+                throw new InvalidInputException("Please add the correct number of operands and operators");
+            }
+
             // Iterate over operators and apply them to the operands
             foreach ($operatorsStack as $operator) {
-                echo '1' .  print_r($operandsStack,true);
-
                 $firstOperand  = array_pop($operandsStack);
                 $secondOperand = array_pop($operandsStack);
 
-                echo "values : \n";
-                echo $firstOperand->getValue();
-                echo $secondOperand->getValue();
                 $partialResult = $operator->applyOperator($firstOperand, $secondOperand);
-                echo '2' . print_r($operandsStack,true);
                 $operandsStack[] = new FloatOperand($partialResult);
-
-                echo '3' . print_r($operandsStack,true);
-
-
-                echo $partialResult;
             }
+
+            echo "\n Result is : " . $partialResult;
 
 
         } catch (\Throwable $e) {
