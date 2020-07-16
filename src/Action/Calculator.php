@@ -58,12 +58,9 @@ class Calculator
             $operatorsStack = $this->operatorHandler->getOperatorStack();
             $operandsStack  = $this->operandHandler->getOperandStack();
 
-            // Clear input - exitMarker and "enter"
-            array_pop($operandsStack);
-            array_pop($operandsStack);
 
             // Check if there are enough operators and operands
-            if (count($this->operandHandler->getOperandStack()) - count($this->operatorHandler->getOperatorStack()) !== 3) {
+            if (count($this->operandHandler->getOperandStack()) - count($this->operatorHandler->getOperatorStack()) !== 1) {
                 throw new InvalidInputException("Please add the correct number of operands and operators");
             }
 

@@ -13,7 +13,7 @@ class Reader
     /**
      * Define an array with all inputs that stop execution
      */
-    protected const STOP_EXECUTION_CHARS = [
+    public const STOP_EXECUTION_CHARS = [
         'q',
         'quit'
         //EndOfFile

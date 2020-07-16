@@ -30,8 +30,13 @@ class OperandHandler
         foreach ($inputParts as $singleEntity) {
 
             // For the moment - More conditions needs to be added for new features
-            if ($singleEntity != (float)$singleEntity || in_array($singleEntity, AbstractOperator::OPERATORS_COLLECTION)) {
+            if (!is_numeric($singleEntity)
+                || in_array($singleEntity, AbstractOperator::OPERATORS_COLLECTION)
+                || in_array($singleEntity, Reader::STOP_EXECUTION_CHARS)
+            ) {
+                echo sprintf("Skipping %s \n", $singleEntity);
                 continue;
+
             }
 
             $this->operandStack[] = FloatOperand::getOperand($singleEntity);
